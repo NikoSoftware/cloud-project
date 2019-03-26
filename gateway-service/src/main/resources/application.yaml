@@ -1,0 +1,33 @@
+server:
+  port: 8100
+spring:
+  application:
+    name: gateway-service
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9000/eureka
+
+#不用配置了。自动配置的
+#zuul:
+#  routes:
+#    user-server: /user-server/**
+
+zuul:
+  retryable: true
+  add-host-header: true #添加host 头信息
+  sensitive-headers:
+ribbon:
+  ConnectTimeout: 500 # 连接超时时间(ms)
+  ReadTimeout: 2000 # 通信超时时间(ms)
+  OkToRetryOnAllOperations: true # 是否对所有操作重试
+  MaxAutoRetriesNextServer: 2 # 同一服务不同实例的重试次数
+  MaxAutoRetries: 1 # 同一实例的重试次数
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMillisecond: 6000 # 熔断超时时长：6000ms

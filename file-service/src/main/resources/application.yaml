@@ -1,0 +1,22 @@
+server:
+  port: 1100
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9000/eureka
+
+spring:
+  application:
+    name: file-service
+  servlet:
+    multipart:
+      max-file-size: 50MB #指定上传文件大小， 默认1M
+      max-request-size: 50MB  #指定multipart / form-data请求允许的最大大小， 默认10M
+      file-size-threshold: 0 #指定文件写入磁盘后的阈值，默认为0
+      enabled: true
+   #   location:   #指定文件的位置, 没有指定时会自动创建一个临时文件夹
+      resolve-lazily: false  #是否在文件或参数访问时懒惰地解析多部分请求
+
+
+fileUpdatePath: /usr/imageDoc/
