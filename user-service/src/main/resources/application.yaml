@@ -1,0 +1,15 @@
+server:
+  port: 8090
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9000/eureka
+
+spring:
+  application:
+    name: user-service
+  datasource:
+    url: =jdbc:mysql://47.90.96.76:3306/Freight?useUnicode=true&characterEncoding=utf8&useSSL=true
+    username: root
+    password: niko123

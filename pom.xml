@@ -13,6 +13,7 @@
         <module>gateway-service</module>
         <module>file-service</module>
         <module>custom-service</module>
+        <module>user-service</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -20,7 +21,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.4.RELEASE</version>
+        <version>2.1.3.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -32,13 +33,12 @@
         <java.version>1.8</java.version>
         <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
         <mybatis.starter.version>1.3.2</mybatis.starter.version>
-        <mapper.starter.version>2.0.2</mapper.starter.version>
-        <mysql.version>5.1.32</mysql.version>
+
         <pageHelper.starter.version>1.2.3</pageHelper.starter.version>
         <leyou.latest.version>1.0.0-SNAPSHOT</leyou.latest.version>
         <fastDFS.client.version>1.26.1-RELEASE</fastDFS.client.version>
         <jpa.version>1.0</jpa.version>
-        <jackson.version>2.9.7</jackson.version>
+        <jackson.version>2.9.8</jackson.version>
         <spring.webmvc.version>5.0.6.RELEASE</spring.webmvc.version>
         <thymeleaf.version>RELEASE</thymeleaf.version>
         <spring.amqp.version>2.1.0.M4</spring.amqp.version>
@@ -54,6 +54,8 @@
         <spring.config.version>2.0.0.RELEASE</spring.config.version>
         <dockerfile-maven-version>1.3.7</dockerfile-maven-version>
         <lombok.version>1.16.14</lombok.version>
+        <baomidou.version>3.1.0</baomidou.version>
+        <mybatis.plus.generator>3.0.6</mybatis.plus.generator>
     </properties>
 
     <dependencyManagement>
@@ -238,6 +240,16 @@
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${baomidou.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis.plus.generator}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -248,14 +260,6 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 
 
