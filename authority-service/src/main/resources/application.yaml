@@ -1,0 +1,36 @@
+server:
+  port: 8070
+
+spring:
+  application:
+    name: authority-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9000/eureka
+
+feign:
+  okhttp:
+    enabled: true
+
+
+auth:
+  jwt:
+    secret: gfgda
+    pubKey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDjqTfiQhmGAHutW6ChUPIit1QyqE7XWqP0qjnZ
+      stKnJrP/QQ39SIbZuMZZeFzBt8XTwxfkCbO1Zbnt28kgWPA6fhHs27o3Xi/BOJ3oJdlsnpK6xHz6
+      2J777fxMbUnrwlFEagHHdwyJhTatWRKZPkeeH6O/0KnKtaQtQhfe3UfIRwIDAQAB
+    priKey: MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAOOpN+JCGYYAe61boKFQ8iK3VDKo
+      Ttdao/SqOdmy0qcms/9BDf1Ihtm4xll4XMG3xdPDF+QJs7Vlue3bySBY8Dp+EezbujdeL8E4negl
+      2WyekrrEfPrYnvvt/ExtSevCUURqAcd3DImFNq1ZEpk+R54fo7/Qqcq1pC1CF97dR8hHAgMBAAEC
+      gYA56GsclC+l1C2hVPMw1UQh7HvwPrt/L8EQlNQOOdw3RDL4tHV4faA/dS6Ox3zgkXwydyd2i7k4
+      ZN28UPGB1t2TqFIHomsuWiLJj9oWBNG62DAbMytYv+pShxpVuGJZDliTAaiM5c+DHrJk98lpcuba
+      C3BnzJ6TUdST+27gjcdDkQJBAP3CWu/il4awjrtN1FjAjwlGXQktTwh/K8yuyg5uDm0y7a1KDiD+
+      DasuIDRrN91Rgs3b49NcrVgNkw4LGkXX4pMCQQDlq92nnUGXaQbGHCxEJdzY6mX5YCKQaEKcBagr
+      EwEqN4i8Wxz3Y+J+g3ktJ95BqMkQMx+yoU1lVGq4Msq5aM/9AkBvGmdiXF1nlWoIzBzK9xQpRWt6
+      lyHhYHy201iYVMtwODokAyaIf3NQnZNwH/mHpyaUJ1BqvEsRIHBgV7AbIFiNAkBT1WI5Noukqu+Q
+      DOSTk4aDnzvNxSuYrpXxwZba8jrwoAjHSDLQkqMwLulidDUKnoOV6DNfzsUjgabayZ96Aio5AkAb
+      D/BjkpihE7XU+K3/G2SSXMEFq50yy0xqam3hOSQkTJbdD4bc3ngVFqJt42GoHP0D6Dc4y2NuLWLi
+      1X2sxUwD
+    expire: 60

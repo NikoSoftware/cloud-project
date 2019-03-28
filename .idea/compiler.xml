@@ -2,10 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="authority-service" />
         <module name="base-common" />
         <module name="custom-service" />
         <module name="eureka-service" />
@@ -17,6 +19,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="authority-service" options="-parameters" />
       <module name="base-common" options="-parameters" />
       <module name="custom-service" options="-parameters" />
       <module name="eureka-service" options="-parameters" />

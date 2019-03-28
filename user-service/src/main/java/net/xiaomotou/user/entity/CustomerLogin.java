@@ -29,6 +29,10 @@ public class CustomerLogin implements Serializable {
     private String loginName;
 
     /**
+     * 密码加盐
+     */
+    private String salt;
+    /**
      * md5加密的密码
      */
     private String password;
@@ -79,14 +83,23 @@ public class CustomerLogin implements Serializable {
         this.modifiedTime = modifiedTime;
     }
 
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
     @Override
     public String toString() {
         return "CustomerLogin{" +
-        "customerId=" + customerId +
-        ", loginName=" + loginName +
-        ", password=" + password +
-        ", userStats=" + userStats +
-        ", modifiedTime=" + modifiedTime +
-        "}";
+                "customerId=" + customerId +
+                ", loginName='" + loginName + '\'' +
+                ", salt='" + salt + '\'' +
+                ", password='" + password + '\'' +
+                ", userStats=" + userStats +
+                ", modifiedTime=" + modifiedTime +
+                '}';
     }
 }

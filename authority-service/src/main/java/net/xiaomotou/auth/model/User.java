@@ -1,8 +1,6 @@
-package net.xiaomotou.user.entity;
+package net.xiaomotou.auth.model;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -10,11 +8,9 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -24,14 +20,12 @@ import java.io.Serializable;
  * @author niko
  * @since 2019-03-27
  */
-public class CustomerInf implements Serializable {
+public class User implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
     /**
      * 自增主键ID
      */
-    @TableId(value = "customer_inf_id", type = IdType.AUTO)
     private Integer customerInfId;
 
     /**
@@ -42,7 +36,6 @@ public class CustomerInf implements Serializable {
     /**
      * 用户真实姓名
      */
-    @NotEmpty(message="姓名不能为空")
     private String customerName;
 
     /**
@@ -53,26 +46,21 @@ public class CustomerInf implements Serializable {
     /**
      * 证件号码
      */
-    @Pattern(regexp = "/^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$|^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$/"
-    ,message = "身份证有误")
     private String identityCardNo;
 
     /**
      * 手机号
      */
-    @Size(min = 11, max=11,message="电话号码必须11位")
     private String mobilePhone;
 
     /**
      * 邮箱
      */
-    @Pattern(regexp = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$", message = "状态只能为00或01或02或03")
     private String customerEmail;
 
     /**
      * 性别
      */
-    @Pattern(regexp = "[0-1]",message = "性别只能是男或女")
     private String gender;
 
     /**
@@ -83,8 +71,8 @@ public class CustomerInf implements Serializable {
     /**
      * 注册时间
      */
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)  //application/json
+    @JsonSerialize(using = LocalDateTimeSerializer.class) //application/json
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private LocalDateTime registerTime;
@@ -92,8 +80,8 @@ public class CustomerInf implements Serializable {
     /**
      * 会员生日
      */
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)  //application/json
+    @JsonSerialize(using = LocalDateTimeSerializer.class) //application/json
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private LocalDateTime birthday;
@@ -218,7 +206,7 @@ public class CustomerInf implements Serializable {
 
     @Override
     public String toString() {
-        return "CustomerInf{" +
+        return "User{" +
         "customerInfId=" + customerInfId +
         ", customerId=" + customerId +
         ", customerName=" + customerName +

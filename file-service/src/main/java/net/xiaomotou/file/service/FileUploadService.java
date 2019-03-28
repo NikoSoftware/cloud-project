@@ -3,6 +3,7 @@ package net.xiaomotou.file.service;
 import lombok.extern.slf4j.Slf4j;
 import net.xiaomotou.commonexception.BusinessException;
 import net.xiaomotou.commonexception.ExceptionEnum;
+import net.xiaomotou.utils.NumberUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class FileUploadService {
 
         String suffixName = oldFileName.substring(oldFileName.lastIndexOf("."));
 
-        String fileName = randomCode(4) + System.currentTimeMillis() + suffixName;
+        String fileName = NumberUtils.randomCode(4) + System.currentTimeMillis() + suffixName;
         File dest = new File(filePath, fileName);
 
         // 检测是否存在目录
@@ -43,30 +44,6 @@ public class FileUploadService {
     }
 
 
-    /**
-     * 随机生成码
-     *
-     * @param length 生成随机码长度
-     * @return 生成随机码
-     */
-    public static String randomCode(int length) {
-        // 最终生成的密码
-        String code = "";
-        Random random = new Random();
-        for (int i = 0; i < length; i++) {
-            // 随机生成0或1，用来确定是当前使用数字还是字母 (0则输出数字，1则输出字母)
-            int charOrNum = random.nextInt(2);
-            if (charOrNum == 1) {
-                // 随机生成0或1，用来判断是大写字母还是小写字母 (0则输出小写字母，1则输出大写字母)
-                int temp = random.nextInt(2) == 1 ? 65 : 97;
-                code += (char) (random.nextInt(26) + temp);
-            } else {
-                // 生成随机数字
-                code += random.nextInt(10);
-            }
-        }
-        return code;
-    }
 
 
 }

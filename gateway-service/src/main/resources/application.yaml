@@ -1,8 +1,11 @@
 server:
-  port: 8100
+  port: 8200
 spring:
   application:
     name: gateway-service
+  main:
+    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
+
 eureka:
   client:
     service-url:
