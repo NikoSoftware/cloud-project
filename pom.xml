@@ -42,7 +42,7 @@
         <jackson.version>2.9.8</jackson.version>
         <spring.webmvc.version>5.0.6.RELEASE</spring.webmvc.version>
         <thymeleaf.version>RELEASE</thymeleaf.version>
-        <spring.amqp.version>2.1.0.M4</spring.amqp.version>
+        <spring.amqp.version>RELEASE</spring.amqp.version>
         <aliyun.sdk.version>3.3.1</aliyun.sdk.version>
         <aliyun.sms.sdk.version>1.0.0</aliyun.sms.sdk.version>
         <redis.version>2.1.0.M4</redis.version>
@@ -114,6 +114,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-amqp</artifactId>
                 <version>${spring.amqp.version}</version>
+
+
             </dependency>
 
             <!--阿里云sdk-->

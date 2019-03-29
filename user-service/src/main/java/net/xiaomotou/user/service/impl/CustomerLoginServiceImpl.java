@@ -31,6 +31,7 @@ import java.time.LocalDateTime;
 @Service
 public class CustomerLoginServiceImpl extends ServiceImpl<CustomerLoginMapper, CustomerLogin> implements ICustomerLoginService {
 
+
     @Autowired
     CustomerLoginMapper customerLoginMapper;
 
@@ -49,7 +50,7 @@ public class CustomerLoginServiceImpl extends ServiceImpl<CustomerLoginMapper, C
         if(DigestUtils.md5DigestAsHex((customerLogin.getSalt()+password).getBytes())
                 .toLowerCase().equals(customerLogin.getPassword())){
             QueryWrapper<CustomerInf> wrapper = new QueryWrapper<>();
-            queryWrapper.eq("customer_id",customerLogin.getCustomerId());
+            wrapper.eq("customer_id",customerLogin.getCustomerId());
            return ResponseEntity.ok(customerInfMapper.selectOne(wrapper));
         }else{
             throw new BusinessException(ExceptionEnum.INVALID_USERNAME_PASSWORD);
@@ -84,6 +85,22 @@ public class CustomerLoginServiceImpl extends ServiceImpl<CustomerLoginMapper, C
         customerInfMapper.insert(customerInf);
 
         return ResponseEntity.ok(customerInf);
+    }
+
+    @Override
+    @Transactional
+    public void removeUser(String userName) {
+        CustomerLogin customerLogin =null;
+        QueryWrapper<CustomerLogin> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("login_name",userName);
+        customerLogin = customerLoginMapper.selectOne(queryWrapper);
+        if(customerLogin==null){
+            return;
+        }
+        QueryWrapper<CustomerInf> wrapper = new QueryWrapper<>();
+        wrapper.eq("customer_id",customerLogin.getCustomerId());
+        customerInfMapper.delete(wrapper);
+        customerLoginMapper.delete(queryWrapper);
     }
 
 

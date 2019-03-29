@@ -16,7 +16,7 @@ public enum ExceptionEnum {
     IMAGE_PARAM_FAILED(415,"图片参数异常！"),
     INVALID_USERNAME_PASSWORD(415,"用户名或密码不正确！"),
     CREATE_TOKEN_ERROR(500,"凭证生成失败！"),
-    AUTH_TOKEN_ERROR(415,"非法登录！"),
+    AUTH_TOKEN_ERROR(403,"非法登录！"),
     USER_NAME_DUPLICATE(415,"用户名已经存在！"),
     REGISTER_ERROR(500,"注册失败！");
 

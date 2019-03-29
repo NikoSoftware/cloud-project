@@ -24,6 +24,11 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
       connection-test-query: SELECT 1
+  rabbitmq:
+    host: 39.108.180.110
+    username: niko
+    password: motou123
+    virtual-host: niko
 
 
 
@@ -31,3 +36,5 @@ spring:
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   type-aliases-package: net.xiaomotou.user.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -19,4 +19,6 @@ public interface ICustomerLoginService extends IService<CustomerLogin> {
 
     ResponseEntity<CustomerInf> customerRegister(CustomerInf  customerInf,String userName, String password);
 
+    void removeUser(String userName);
+
 }

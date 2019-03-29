@@ -1,26 +1,25 @@
 server:
-  port: 8070
-
+  port: 8200
 spring:
   application:
-    name: authority-service
-  rabbitmq:
-    host: 39.108.180.110
-    username: niko
-    password: motou123
-    virtual-host: niko
-    port: 5672
+    name: gateway-service
+  main:
+    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
 
 eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:9000/eureka
 
-feign:
-  okhttp:
-    enabled: true
-  hystrix:
-    enabled: false
+#不用配置了。自动配置的
+#zuul:
+#  routes:
+#    user-server: /user-server/**
+
+zuul:
+  retryable: true
+  add-host-header: true #添加host 头信息
+  sensitive-headers:
 
 ribbon:
   ConnectTimeout: 3000 # 连接超时时间(ms)
@@ -36,6 +35,13 @@ hystrix:
         isolation:
           thread:
             timeoutInMillisecond: 6000 # 熔断超时时长：6000ms
+
+filter:
+  allowPaths:
+    - /user-server/customer-login/*
+    - /authority-service/login
+    - /authority-service/register
+    - /authority-service/removeUser
 
 
 auth:

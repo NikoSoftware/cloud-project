@@ -105,6 +105,16 @@ public class User implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private LocalDateTime modifiedTime;
 
+    /**
+     * token 创建时间
+     */
+    private Long iat;
+
+    /**
+     * token 过期时间
+     */
+    private Long exp;
+
     public Integer getCustomerInfId() {
         return customerInfId;
     }
@@ -204,23 +214,41 @@ public class User implements Serializable {
         this.modifiedTime = modifiedTime;
     }
 
+    public Long getIat() {
+        return iat;
+    }
+
+    public void setIat(Long iat) {
+        this.iat = iat;
+    }
+
+    public Long getExp() {
+        return exp;
+    }
+
+    public void setExp(Long exp) {
+        this.exp = exp;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-        "customerInfId=" + customerInfId +
-        ", customerId=" + customerId +
-        ", customerName=" + customerName +
-        ", identityCardType=" + identityCardType +
-        ", identityCardNo=" + identityCardNo +
-        ", mobilePhone=" + mobilePhone +
-        ", customerEmail=" + customerEmail +
-        ", gender=" + gender +
-        ", userPoint=" + userPoint +
-        ", registerTime=" + registerTime +
-        ", birthday=" + birthday +
-        ", customerLevel=" + customerLevel +
-        ", userMoney=" + userMoney +
-        ", modifiedTime=" + modifiedTime +
-        "}";
+                "customerInfId=" + customerInfId +
+                ", customerId=" + customerId +
+                ", customerName='" + customerName + '\'' +
+                ", identityCardType=" + identityCardType +
+                ", identityCardNo='" + identityCardNo + '\'' +
+                ", mobilePhone='" + mobilePhone + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", gender='" + gender + '\'' +
+                ", userPoint=" + userPoint +
+                ", registerTime=" + registerTime +
+                ", birthday=" + birthday +
+                ", customerLevel=" + customerLevel +
+                ", userMoney=" + userMoney +
+                ", modifiedTime=" + modifiedTime +
+                ", iat=" + iat +
+                ", exp=" + exp +
+                '}';
     }
 }
