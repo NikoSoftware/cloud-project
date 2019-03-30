@@ -18,5 +18,9 @@ spring:
    #   location:   #指定文件的位置, 没有指定时会自动创建一个临时文件夹
       resolve-lazily: false  #是否在文件或参数访问时懒惰地解析多部分请求
 
-
-fileUpdatePath: /usr/imageDoc/
+ftp:
+  host: 39.108.180.110
+  port: 21
+  username: niko
+  password: motou
+  fileUpdatePath:  /usr/imageDoc/  #C:/usr/imageDoc/

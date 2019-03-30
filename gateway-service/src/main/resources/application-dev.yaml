@@ -42,6 +42,8 @@ filter:
     - /authority-service/login
     - /authority-service/register
     - /authority-service/removeUser
+    - /zuul/file-service/file/upload
+    - /zuul/file-service/file/downloadFile
 
 
 auth:

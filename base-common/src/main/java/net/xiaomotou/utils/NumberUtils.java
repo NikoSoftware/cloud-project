@@ -89,7 +89,7 @@ public class NumberUtils {
             if (charOrNum == 1) {
                 // 随机生成0或1，用来判断是大写字母还是小写字母 (0则输出小写字母，1则输出大写字母)
                 int temp = random.nextInt(2) == 1 ? 65 : 97;
-                code += (char) (random.nextInt(26) + temp);
+                code += (char)(random.nextInt(26) + temp);
             } else {
                 // 生成随机数字
                 code += random.nextInt(10);

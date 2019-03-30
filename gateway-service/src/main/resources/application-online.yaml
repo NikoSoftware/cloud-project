@@ -35,7 +35,14 @@ hystrix:
           thread:
             timeoutInMillisecond: 6000 # 熔断超时时长：6000ms
 
-
+filter:
+  allowPaths:
+    - /user-server/customer-login/*
+    - /authority-service/login
+    - /authority-service/register
+    - /authority-service/removeUser
+    - /file-service/file/upload
+    - /zuul/file-service/file/upload
 
 
 auth:
