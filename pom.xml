@@ -58,6 +58,7 @@
         <baomidou.version>3.1.0</baomidou.version>
         <mybatis.plus.generator>3.0.6</mybatis.plus.generator>
         <joda.time.version>2.10.1</joda.time.version>
+        <thumbnailator.version>0.4.8</thumbnailator.version>
     </properties>
 
     <dependencyManagement>
@@ -273,6 +274,11 @@
                 <version>5.3.6.Final</version>
             </dependency>
 
+            <dependency>
+                <groupId>net.coobird</groupId>
+                <artifactId>thumbnailator</artifactId>
+                <version>${thumbnailator.version}</version>
+            </dependency>
 
 
         </dependencies>

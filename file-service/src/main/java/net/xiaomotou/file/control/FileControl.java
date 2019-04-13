@@ -2,6 +2,7 @@ package net.xiaomotou.file.control;
 
 
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnails;
 import net.xiaomotou.commonexception.BusinessException;
 import net.xiaomotou.commonexception.ExceptionEnum;
 import net.xiaomotou.file.config.FtpConfig;
@@ -15,7 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -51,6 +55,13 @@ public class FileControl {
         } catch (FileNotFoundException e) {
           throw new BusinessException(ExceptionEnum.IMAGE_PARAM_FAILED);
         }
+//        InputStream inputStream =null;
+//
+//        try {
+//            inputStream = fileUploadService.compressFile(fileName,0.7,1024*1024,1080,1920);
+//        } catch (Exception e) {
+//            throw new BusinessException(ExceptionEnum.IMAGE_PARAM_FAILED);
+//        }
         log.info("[图片下载]: {}",fileName);
         return ResponseEntity.ok()
                 .header("Access-Control-Allow-Origin", "*")
@@ -60,9 +71,16 @@ public class FileControl {
                 .contentLength(file.length())
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(new InputStreamResource(inputStream));
-
     }
 
+
+    @GetMapping("/getAllFile")
+    public ResponseEntity<List<String>> getAllFile(){
+
+        List<String> arrayList = fileUploadService.getAllFile();
+
+       return ResponseEntity.ok(arrayList);
+    }
 
 
 }

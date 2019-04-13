@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Pattern;
 
-@Component
+//@Component
 public class AuthFilter extends ZuulFilter {
 
     @Autowired

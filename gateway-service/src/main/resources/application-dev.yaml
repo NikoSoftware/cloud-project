@@ -39,12 +39,14 @@ hystrix:
 filter:
   allowPaths:
     - /user-server/customer-login/*
+    - /user-server/addr-provinces/getProvinces
+    - /user-server/addr-cities/getCityArea
     - /authority-service/login
     - /authority-service/register
     - /authority-service/removeUser
     - /zuul/file-service/file/upload
     - /zuul/file-service/file/downloadFile
-
+    - /zuul/file-service/file/getAllFile
 
 auth:
   jwt:

@@ -23,4 +23,4 @@ ftp:
   port: 21
   username: niko
   password: motou
-  fileUpdatePath:  /usr/imageDoc/  #C:/usr/imageDoc/
+  fileUpdatePath: /usr/imageDoc/ # C:/usr/imageDoc/
