@@ -1,0 +1,24 @@
+package com.smzc.taxi.service.order.exception;
+
+/**
+ * TODO
+ *
+ * @author Tangqiandong
+ * @version v1.0
+ * @date 2019/5/15
+ */
+public class OrderException extends RuntimeException {
+    @Override
+    public String getMessage() {
+        return super.getMessage();
+    }
+
+    public OrderException(){
+        super();
+    }
+
+    public OrderException(String msg){
+        super(msg);
+    }
+
+}
