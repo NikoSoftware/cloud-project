@@ -7,13 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="authority-service" />
-        <module name="base-common" />
-        <module name="custom-service" />
-        <module name="eureka-service" />
-        <module name="file-service" />
         <module name="gateway-service" />
+        <module name="custom-service" />
+        <module name="base-common" />
+        <module name="authority-service" />
+        <module name="eureka-service" />
         <module name="user-service" />
+        <module name="file-service" />
       </profile>
     </annotationProcessing>
   </component>
