@@ -1,0 +1,282 @@
+import com.alibaba.fastjson.JSONObject;
+import com.xiaomotou.smsplatform.SmsplatformApplication;
+import com.xiaomotou.smsplatform.controller.WxAlipayController;
+import com.xiaomotou.smsplatform.entity.WxAlipay;
+import com.xiaomotou.smsplatform.model.OcrResultModel;
+import com.xiaomotou.smsplatform.service.impl.CashOutInfoServiceImpl;
+import com.xiaomotou.smsplatform.service.impl.UserScoreAccountServiceImpl;
+import com.xiaomotou.smsplatform.websocket.LogThreadCall;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+import java.util.stream.Stream;
+
+/**
+ * @author chenzhongqin
+ * @version 1.0
+ * @date 2019/5/29
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = SmsplatformApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class TestApplication {
+    private static String projectName = "smsplatform";
+
+
+    @Qualifier("taskExecutor")
+    @Autowired
+    TaskExecutor taskExecutor;
+
+    @Autowired
+    UserScoreAccountServiceImpl userScoreAccountService;
+
+    @Autowired
+    @Qualifier("restTemplate")
+    private RestTemplate restTemplate;
+
+    @Autowired
+    WxAlipayController wxAlipayController;
+
+    @Autowired
+    CashOutInfoServiceImpl cashOutInfoService;
+
+    @Test
+    public void test() {
+
+
+        try {
+            Process process = Runtime.getRuntime().exec("ls /usr/cloudProject/log/");
+            InputStream inputStream = process.getInputStream();
+
+            // 一定要启动新的线程，防止InputStream阻塞处理WebSocket的线程
+            FutureTask<List<String>> future = new FutureTask<>(new LogThreadCall(inputStream));
+
+            new Thread(future).start();
+            List<String> docNameList = future.get();
+            System.out.println(docNameList.toString());
+            Optional<String[]> data = docNameList.stream()
+                    .map(name -> name.split("\\."))
+                    .filter(strings -> strings.length == 4)
+                    .filter(strings -> {// 判断应用名称，时间，标号是不是数字
+                        if (strings[0].equals(projectName)
+                                && strings[1].equals(LocalDateTime.now()
+                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                        ) {
+                            return true;
+                        }
+                        return false;
+                    })
+                    .max(Comparator.comparing(strings -> Integer.parseInt(strings[2])));
+
+            System.out.println("-----------");
+
+            System.out.println(StringUtils.join(data.get(), "."));
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    public void testThread() {
+
+//        Random seed = new Random();
+//        Supplier<Integer> random = seed::nextInt;
+        Stream.generate(() -> 100).forEach(index -> {
+            taskExecutor.execute(() -> {
+                System.out.println(Thread.currentThread().getName());
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+
+        });
+
+    }
+
+
+    @Test
+    public void testScore() {
+
+        userScoreAccountService.shareNewUserAddScore("oyKk75NuoCF_csSkdtisUskXTf5M");
+
+
+    }
+
+
+    @Test
+    public void testImage() {
+
+        String url = "http://212.64.127.151:6002/ocr_captcha";
+
+
+          JSONObject postData = new JSONObject();
+        postData.put("image_base64", getNetImage());
+        postData.put("app_id", "1194142140@MTE5NDE0MjE0MA==");
+        postData.put("ocr_code", "0001");
+
+        OcrResultModel data = null;
+        try {
+            data = restTemplate.postForObject(url, postData, OcrResultModel.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.printf(data.toString());
+
+    }
+
+
+    private static String netImageToBase64() {
+        String netImagePath = "https://m.bmpsz.com/index.php?m=Mobile&c=User&a=verify&r=0.5153141290026524";
+        final ByteArrayOutputStream data = new ByteArrayOutputStream();
+        try {
+            // 创建URL
+            URL url = new URL(netImagePath);
+            final byte[] by = new byte[1024 * 5];
+            // 创建链接
+            final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(5000);
+
+
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+            try {
+                InputStream is = conn.getInputStream();
+                // 将内容读取内存中
+                int len = -1;
+                while ((len = is.read(by)) != -1) {
+                    data.write(by, 0, len);
+                }
+                File imageFile = new File("src/main/resources/static/images/qr.png");
+
+
+                // 对字节数组Base64编码
+
+                String strNetImageToBase64 = Base64.encodeBase64String(data.toByteArray());
+                System.out.println(strNetImageToBase64);
+                // 关闭流
+
+                is.close();
+
+                return strNetImageToBase64;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//                }
+//            }).start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    public String getNetImage(){
+
+        String netImagePath = "https://m.bmpsz.com/index.php?m=Mobile&c=User&a=verify&r=0.5153141290026524";
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Resource> httpEntity = new HttpEntity<Resource>(headers);
+        ResponseEntity<byte[]> response = restTemplate.exchange(netImagePath, HttpMethod.GET,
+                httpEntity, byte[].class);
+
+        String strNetImageToBase64 = Base64.encodeBase64String(response.getBody());
+        System.out.println(strNetImageToBase64);
+
+        return strNetImageToBase64;
+    }
+
+
+
+    @Test
+    public void images(){
+
+        String image = "iVBORw0KGgoAAAANSUhEUgAAAUAAAABkBAMAAAAF9PQNAAAAG1BMVEXz+/4pjGzZ7eun0cd0taJbp5BCmX6Ow7XA39mSWEWtAAAFX0lEQVRoge2Zy3PTSBCHJdlxdPSE2OHokGTJ0a7UAsc4bOCKga3iGBM2m6NdsFSOCg/zb69meh49L0m25Ei7pV9SIGZGrW+6e3pGIghatWrVqlWrVq1a/W91epbUjZCleErIcFE3hV/xnKQajOrm8CmaEaarukF8WgEf2a8bxKNdIjSqG8WtpQRs5jJRDiRv6mZxaqIA+3WzuBSRhgFG38+0TWOnYYA/WE3+O5EN9wzt7mdDCuEz7qvhWLSwIv0WIn1eIxloJaMp9rVIVGgKmtSIxtRB+fYGNe2lF2noB7XCUS0R4AE0dXloYxb4D7XiaQ4kQ2jb4TtID1rPq3nS0eXNzfu7tW87xIA84TigONBUc174nef5OH+oJlZhyKdL+HuMAVc6djn9lFFab3Nn6UZuxcVCAn5A20kF2zHKpGGyzo0swsNRekUv/loIarpc5sLk4/KAE3spFtNUVJTg7MU30diBiijXd1YShqTIY2It09cIcuxcphHsKal353hxu0UH5D5HX4qPigNC5o3oaSFBzTwVB0kEhFkmQjYi50gx1QDXOKUz64PgmHJcm51xIqaeaZA/NAsx0vn8MY7MBpa7j47htlvHHeDiJAswlM/1DuEH9OsnvyAiV76By7dGw4ytAfEARw3tFAiJ8ozPiz251n5jV3uecSfoRGXa9iRvJzcHsQt9iJAotJxCsD11i34r2B9pLTqgY7V2Pe2aNCMuxIlKlHkG4JLlAW7RTgrO5GXBya2soWbF82SYZgbgCdx+gZq63OT7V0QGQWq1EKaL7CSZcWYeZCfLjBDHfOfCW+GOZL63LB/TVO7Y3H75nTiRjfBE5yJZiptRGqrVtWve2JmnU4mmKnnKIMIiOQ9Exb5y3Hui7lX1LpTDIwOQnQWHczmBolKRxtEAvw0/n34lEtWQthxkP8xsISdPAcHwEg3/uAYg9qJqM3cSR8HVNkOZhmojkx6E08kuHj5aCxAhKidOdEDbIhRwMuADRNAO5Uw73CLps3/jArnBadByol7P7LrK+4djkYm3GJDOB7JkRsL0h058pswl6wOqVBROVC/fxFVXeYAvVG6dIzs0ByEGffZDraoDnOsIUUCmE58RJbvKANbgm6qGELeeuBYhCNkPQTHZ+Cu66cSnlzef7mbIO1jiBfKdTH9YR3wnefkc+gfChUS5usQHVon4WrxM8NQe2WPFqjzg2cDPLeZeHAoX9kXXhW1rDUnDg5cMqicgsKKE/imS9BZ8MzYt8GhIF/YDeoodluPDdZtRQFiu9DG7kEUqZGkayjksNb5D7sCA+fD0y+ekJF+gL5YOTi+pHmy+8etXwr9dlVg9lwNh5uXZQGixgDvM72VpwTgYsauV8PUv2RnNER84UE68KkIzj8ydc6LScmr34xdW4b6qCfU8sgo/64ZztHU8DtmC4FLug67KPp/reWS9+CxV3LsiWxGeSJE97L5qCY03HycguG0Hu5jj9clj+t55SKyPLKQywnuShThRHoSEG8PTOR6vLH0HTGWEYiND6Y56EdWMX4YsstKFfX7G2h5hbBEiyxBXGuOu7BO/0oVuu2F1PoSz/r4Lkqfo9ZMjXvNC9Stc6LMbOnJ6Qx19+fOPO/MN2q2+6cIMs9X5UDOZI92F2ebMjH4QROzCXGvbIMxFlC4sYmwrhBmIc+XCgra2Q2idIVB8CzsPW9oCoYdxg4W5PcLAAblBtAp9yC+p+B/6jHeb3k626kRQ9P3FaPO7yUMglhJpPGKZJH4Y4ZUm2+oEsuSo/mHdTLpswsaF2yKsG8iS6cS6eRzK+1+lBihsOmDg+EreQIVNB2zVqlWrVv8J/QszBP7cTGiopAAAAABJRU5ErkJggg==";
+
+        File imageFile = new File("src/main/resources/static/images/qr.png");
+        //创建输出流
+        FileOutputStream outStream = null;
+        try {
+            outStream = new FileOutputStream(imageFile);
+
+
+            //写入数据
+            outStream.write(Base64.decodeBase64(image));
+
+
+            outStream.close();
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+    @Test
+    public void test1(){
+
+        WxAlipay wxAlipay = new WxAlipay();
+
+        wxAlipay.setAliName("蒋倩");
+        wxAlipay.setAlipay("18408249437");
+        wxAlipay.setOpenId("oyKk75C_I_rluRxMvhJY3cctJd4Q");
+        wxAlipay.setShareOpenId("oyKk75NuoCF_csSkdtisUskXTf5M");
+
+        wxAlipayController.saveWxAlipay(wxAlipay);
+
+
+    }
+
+
+    @Test
+    public  void del(){
+
+        cashOutInfoService.checkLastCashOut();
+
+    }
+
+
+
+}
